@@ -13,6 +13,7 @@ Whether you are selecting a bar for a new rice setup, evaluating alternatives fo
 | **Waybar** | https://github.com/Alexays/Waybar | C++ | Highly customizable, feature-rich status bar with extensive module system |
 | **Swaybar** | https://github.com/swaywm/sway (built-in) | C | Minimalist status bar, part of Sway compositor |
 | **Hyprbar** | https://github.com/hyprwm/hyprbar | C | Lightweight bar specifically for Hyprland compositor |
+| **ashell** | https://github.com/MalpenZibo/ashell | Rust | Ready-to-go status bar for Wayland compositors, hot-reload, theming, and modern GTK4/iced-rs integration |
 | **Nwg-panel** | https://github.com/nwg-piotr/nwg-panel | Python | GTK-based panel for Sway and Hyprland, supports widgets/plugins |
 | **Ironbar** | https://github.com/JakeStanger/ironbar | Rust | GTK4-based bar with CSS styling support |
 | **Yambar** | https://gitlab.com/dnkl/yambar | C | Modular status bar with plugin-based architecture |
