@@ -1,6 +1,8 @@
-# Linux Bar / Taskbar Solutions
+# Linux Bar & Taskbar Solutions
 
-This project aims to build a flexible bar/taskbar for Linux that supports both X11 and Wayland.
+A comprehensive reference catalog of every status bar, taskbar, and panel solution available in the Linux ecosystem. This document covers the full spectrum: from minimalist X11 bars to modern Wayland-native panels, from C-written performance-critical solutions to flexible widget frameworks.
+
+Whether you are selecting a bar for a new rice setup, evaluating alternatives for an existing workflow, or building a custom solution from scratch, this reference provides the data you need to make an informed decision.
 
 ## Comprehensive Linux Rice Taskbar/Status Bar Solutions
 
@@ -87,15 +89,289 @@ This project aims to build a flexible bar/taskbar for Linux that supports both X
 | **Wingpanel** | https://github.com/elementary/wingpanel | Vala | Top panel from elementary OS |
 | **Tint2 (dock mode)** | https://gitlab.com/o9000/tint2 | C | Can be configured as dock |
 
-### Widget Frameworks (Bar-Capable)
+## Widget-Capable Libraries & Frameworks
 
-| Project | Git Repository | Language | Description |
-|---------|---------------|----------|-------------|
-| **Eww** | https://github.com/elkowar/eww | Rust | ElKowars Wacky Widgets, configurable as bar |
-| **Ags** | https://github.com/Aylur/ags | TypeScript/GJS | Aylurs GTK Shell, bar-capable |
-| **Fabric** | https://github.com/Fabric-Development/fabric | Python | Next-gen desktop widget framework |
-| **Quickshell** | https://github.com/quickshell-mirror/quickshell | C++ | QtQuick desktop shell toolkit |
-| **Conky** | https://github.com/brndnmtthws/conky | C++ | System monitor with desktop output |
+A comprehensive analysis of widget systems that can be used to build status bars, panels, and desktop shells. These are not standalone bars themselves, but provide the building blocks for creating custom solutions.
+
+### Overview Matrix
+
+| Project | Git Repository | Language | Platform | Stars | License | Last Release |
+|---------|---------------|----------|----------|-------|---------|--------------|
+| **Eww** | https://github.com/elkowar/eww | Rust | X11 + Wayland | ~12,500 | MIT | v0.6.0 (2024) |
+| **Conky** | https://github.com/brndnmtthws/conky | C++ | X11 + Wayland | ~8,400 | GPL-3.0 | v1.24.2 (2026) |
+| **Ags** | https://github.com/Aylur/ags | TypeScript/GJS | Wayland | ~3,100 | GPL-3.0 | v3.1.2 (2026) |
+| **Quickshell** | https://github.com/quickshell-mirror/quickshell | C++ | X11 + Wayland | ~2,600 | LGPL-3.0 | v0.3.0 (2026) |
+| **Fabric** | https://github.com/Fabric-Development/fabric | Python | X11 + Wayland | ~1,300 | AGPL-3.0 | v0.0.1 (2024) |
+
+### Detailed Analysis
+
+#### Eww (ElKowars Wacky Widgets)
+
+**Architecture**: Rust-based widget system using GTK3. Uses a custom markup language (Yuck) for configuration.
+
+| Aspect | Details |
+|--------|---------|
+| **Language** | Rust (98.2%) |
+| **Build System** | Cargo |
+| **Core Dependencies** | GTK3, gtk-layer-shell |
+| **Config Format** | Yuck (custom S-expression) + SCSS |
+| **Widget Types** | Label, Button, Input, Scale, Progress, Image, Graph, ColorPicker, EventBox, ListBox |
+| **Data Sources** | Bash scripts, custom commands, variables |
+| **IPC** | eww daemon with IPC commands |
+| **Wayland Support** | Via gtk-layer-shell |
+
+**Strengths**:
+- Highly customizable with Yuck markup
+- SCSS-based styling
+- Active community with many dotfile examples
+- Works on both X11 and Wayland
+
+**Weaknesses**:
+- Custom markup language has learning curve
+- No built-in system monitoring (requires scripts)
+- GTK3 dependency (not GTK4)
+
+#### Conky
+
+**Architecture**: C++ system monitor that can output to desktop, X11 window, or terminal.
+
+| Aspect | Details |
+|--------|---------|
+| **Language** | C++ (85.8%), C (4.5%) |
+| **Build System** | CMake |
+| **Core Dependencies** | X11 or Wayland, Cairo, Imlib2, Lua (optional) |
+| **Config Format** | Lua-like text config |
+| **Widget Types** | Text, graphs, bars, clocks, weather, CPU, memory, disk, network, 300+ objects |
+| **Data Sources** | Built-in system monitoring, Lua scripts, external commands |
+| **IPC** | Mouse events, signal handling |
+| **Wayland Support** | Experimental (caveats) |
+
+**Strengths**:
+- 300+ built-in objects for system monitoring
+- Lua scripting for custom widgets
+- Cairo/Imlib2 for arbitrary drawing
+- Cross-platform (Linux, BSD, macOS)
+- Very mature (20+ years of development)
+
+**Weaknesses**:
+- Complex configuration syntax
+- Limited interactivity (primarily display-only)
+- Experimental Wayland support
+- Not designed as a bar/panel (desktop overlay)
+
+#### Ags (Aylurs GTK Shell)
+
+**Architecture**: TypeScript/GJS framework for building desktop shells using Astal libraries.
+
+| Aspect | Details |
+|--------|---------|
+| **Language** | TypeScript (55.4%), Go (30.1%) |
+| **Build System** | Meson |
+| **Core Dependencies** | GTK3/4, GJS, Astal libraries |
+| **Config Format** | TypeScript/JavaScript (JSX) |
+| **Widget Types** | Full GTK widget set + custom Astal widgets |
+| **Data Sources** | GJS bindings, system APIs, custom services |
+| **IPC** | D-Bus, custom IPC |
+| **Wayland Support** | Native via layer-shell |
+
+**Strengths**:
+- Full GTK widget set available
+- TypeScript/JavaScript for familiar web developers
+- Extensive Astal library ecosystem
+- Native Wayland support
+- Active development with frequent releases
+
+**Weaknesses**:
+- Wayland-only (no X11)
+- GJS runtime dependency
+- Steeper learning curve for non-JS developers
+- Tied to GNOME ecosystem
+
+#### Quickshell
+
+**Architecture**: C++/QML toolkit for building desktop shells with QtQuick.
+
+| Aspect | Details |
+|--------|---------|
+| **Language** | C++ (93.0%), QML (3.5%) |
+| **Build System** | CMake |
+| **Core Dependencies** | Qt6, QtQuick |
+| **Config Format** | QML (Qt Modeling Language) |
+| **Widget Types** | Full Qt widget set + custom QML components |
+| **Data Sources** | C++ plugins, QML bindings, system APIs |
+| **IPC** | Qt signals/slots, custom IPC |
+| **Wayland Support** | Native via Qt Wayland |
+
+**Strengths**:
+- Qt6/QML for powerful UI capabilities
+- Cross-platform (X11 + Wayland)
+- C++ performance with QML flexibility
+- Professional-grade UI toolkit
+- Plugin system for extensions
+
+**Weaknesses**:
+- Qt6 dependency (large)
+- QML learning curve
+- Newer project (less community examples)
+- C++ complexity for custom plugins
+
+#### Fabric
+
+**Architecture**: Python-based widget system using GTK3 with signal-based workflow.
+
+| Aspect | Details |
+|--------|---------|
+| **Language** | Python (97.2%) |
+| **Build System** | setuptools/pyproject.toml |
+| **Core Dependencies** | GTK3, PyGObject |
+| **Config Format** | Python |
+| **Widget Types** | GTK widgets + custom Fabric widgets |
+| **Data Sources** | Python code, signals, polling |
+| **IPC** | Custom signal system |
+| **Wayland Support** | Via gtk-layer-shell |
+
+**Strengths**:
+- Pure Python (easy to learn)
+- Signal-based (no polling for basic tasks)
+- Access to all Python libraries
+- Cross-platform (X11 + Wayland)
+- Low resource usage
+
+**Weaknesses**:
+- GTK3 dependency
+- Early stage (v0.0.1)
+- Smaller community
+- Limited documentation
+
+### Feature Comparison Matrix
+
+| Feature | Eww | Conky | Ags | Quickshell | Fabric |
+|---------|-----|-------|-----|------------|--------|
+| **X11 Support** | ✓ | ✓ | ✗ | ✓ | ✓ |
+| **Wayland Support** | ✓ | Experimental | ✓ | ✓ | ✓ |
+| **GTK Integration** | ✓ (GTK3) | ✗ | ✓ (GTK3/4) | ✗ | ✓ (GTK3) |
+| **Qt Integration** | ✗ | ✗ | ✗ | ✓ (Qt6) | ✗ |
+| **Custom Markup** | ✓ (Yuck) | ✓ (Lua-like) | ✓ (TypeScript) | ✓ (QML) | ✓ (Python) |
+| **Scripting** | Bash | Lua | TypeScript/JS | QML/C++ | Python |
+| **System Monitoring** | Via scripts | ✓ (300+ objects) | Via services | Via plugins | Via Python |
+| **Bar/Panel Mode** | ✓ | ✗ | ✓ | ✓ | ✓ |
+| **Desktop Widgets** | ✓ | ✓ | ✓ | ✓ | ✓ |
+| **Interactive Widgets** | ✓ | Limited | ✓ | ✓ | ✓ |
+| **System Tray** | ✗ | ✗ | ✓ | ✓ | ✗ |
+| **Notifications** | ✗ | ✗ | ✓ | ✓ | ✗ |
+| **Build Complexity** | Low | Medium | Medium | High | Low |
+| **Runtime Size** | ~5MB | ~2MB | ~10MB | ~15MB | ~3MB |
+
+### Architecture Patterns
+
+#### Widget System Architectures
+
+| Pattern | Projects | Description |
+|---------|----------|-------------|
+| **Markup-driven** | Eww (Yuck), Quickshell (QML) | Declarative UI with custom language |
+| **Script-driven** | Conky (Lua), Fabric (Python) | Imperative logic with display layer |
+| **Code-driven** | Ags (TypeScript) | Full programming language for UI |
+| **Hybrid** | All | Mix of declarative and imperative |
+
+#### Data Flow Patterns
+
+| Pattern | Projects | Description |
+|---------|----------|-------------|
+| **Polling** | Eww, Conky | Periodic script execution |
+| **Signal-based** | Ags, Fabric | Event-driven updates |
+| **Push-based** | Quickshell | Server-side updates |
+| **Hybrid** | All | Mix of approaches |
+
+### Dependency Analysis
+
+#### Core Dependencies by Project
+
+| Project | Minimal Dependencies | Full Dependencies |
+|---------|---------------------|-------------------|
+| **Eww** | GTK3, gtk-layer-shell | + Pango, GDK |
+| **Conky** | X11/Wayland, Cairo | + Imlib2, Lua, RSS, MPD |
+| **Ags** | GTK3/4, GJS, Astal | + GLib, D-Bus |
+| **Quickshell** | Qt6, QtQuick | + QtWayland, QtDBus |
+| **Fabric** | GTK3, PyGObject | + Python standard library |
+
+#### Build Time Comparison
+
+| Project | Clean Build Time | Dependencies to Fetch |
+|---------|-----------------|----------------------|
+| **Eww** | ~2-5 min | Cargo crates |
+| **Conky** | ~3-8 min | CMake modules |
+| **Ags** | ~1-3 min | npm packages |
+| **Quickshell** | ~5-15 min | Qt6 modules |
+| **Fabric** | ~1-2 min | pip packages |
+
+### Selection Guide
+
+#### By Developer Background
+
+| Background | Recommended | Why |
+|------------|-------------|-----|
+| **Python** | Fabric, Ags | Familiar syntax, rapid development |
+| **Rust** | Eww | Memory safety, performance |
+| **C++** | Quickshell, Conky | Native performance, Qt ecosystem |
+| **JavaScript/TypeScript** | Ags | Web-like development model |
+| **QML** | Quickshell | Declarative UI expertise |
+
+#### By Use Case
+
+| Use Case | Recommended | Why |
+|----------|-------------|-----|
+| **Status Bar** | Eww, Ags | Bar-specific features |
+| **System Monitor** | Conky | 300+ built-in objects |
+| **Desktop Shell** | Ags, Quickshell | Full desktop integration |
+| **Custom Widgets** | Eww, Fabric | Flexible widget creation |
+| **Cross-platform** | Conky, Quickshell | Multi-platform support |
+| **Wayland-native** | Ags | Native Wayland support |
+
+#### By Resource Constraints
+
+| Constraint | Recommended | Why |
+|------------|-------------|-----|
+| **Low memory** | Conky, Fabric | Minimal runtime |
+| **Low CPU** | Conky, Eww | Efficient updates |
+| **Small binary** | Conky | ~2MB runtime |
+| **Fast startup** | Fabric, Eww | Quick initialization |
+
+### Migration Paths
+
+```
+Conky → Eww (more interactive)
+Conky → Ags (Wayland-native)
+Eww → Ags (full GTK integration)
+Eww → Quickshell (Qt ecosystem)
+Fabric → Ags (more features)
+Ags → Quickshell (Qt performance)
+```
+
+### Community & Ecosystem
+
+| Project | Stars | Forks | Open Issues | Contributors | Documentation |
+|---------|-------|-------|-------------|--------------|---------------|
+| **Eww** | ~12,500 | ~530 | ~327 | ~50+ | Excellent |
+| **Conky** | ~8,400 | ~660 | ~67 | ~100+ | Good |
+| **Ags** | ~3,100 | ~154 | ~21 | ~30+ | Good |
+| **Quickshell** | ~2,600 | ~154 | ~366 | ~20+ | Growing |
+| **Fabric** | ~1,300 | ~44 | ~4 | ~10+ | Basic |
+
+### Development Status
+
+| Status | Projects |
+|--------|----------|
+| **Mature** | Conky (20+ years), Eww (5+ years) |
+| **Active** | Ags, Quickshell |
+| **Early Stage** | Fabric (v0.0.1) |
+
+### Emerging Trends
+
+1. **Wayland-first**: Most new projects target Wayland natively
+2. **Declarative UI**: QML/Yuck-style markup gaining popularity
+3. **TypeScript adoption**: Ags brings web development model to desktop
+4. **Signal-based updates**: Moving away from polling to event-driven
+5. **Plugin architectures**: Extensibility as core design principle
 
 ### WM Built-in Status/Taskbars
 
@@ -133,7 +409,7 @@ A deep-dive analysis of all C-written (pure C) statusbar and taskbar solutions f
 | **Tint2** | https://gitlab.com/o9000/tint2 | GPL-2.0 | ~37,561 | CMake | X11 | Active |
 | **Yambar** | https://gitlab.com/dnkl/yambar | MIT | ~20,720 | Meson | X11 + Wayland | Active |
 | **Yabar** | https://github.com/geommer/yabar | MIT | ~3,697 | Makefile | X11 | Inactive |
-| **i3blocks** | https://github.com/vivien/i3blocks | GPL-3.0 | ~3,581 | Makefile | X11 | Stable |
+| **i3blocks** | https://github.com/vivien/i3blocks | GPL-3.0 | ~3,581 | Autotools | X11 | Stable |
 | **Lemonbar** | https://github.com/LemonBoy/bar | MIT | ~1,619 | Makefile | X11 | Stable |
 | **Slstatus** | https://github.com/stilor/slstatus | ISC | ~1,200 | Makefile | X11 | Stable |
 | **Dzen2** | https://github.com/dzen2/dzen2 | MIT | ~2,500 | Makefile | X11 | Stable |
@@ -148,10 +424,10 @@ A deep-dive analysis of all C-written (pure C) statusbar and taskbar solutions f
 
 | Project | Build System | Core Dependencies | Optional Dependencies |
 |---------|--------------|-------------------|----------------------|
-| **Tint2** | CMake | gtk, pango, cairo, glib, libX11, libXinerama, libXrandr | libXcomposite, libXdamage, libXrender, librsvg |
-| **Yambar** | Meson | pixman, yaml, fcft, tllist | XCB libs (X11), wayland-client (Wayland) |
-| **Yabar** | Makefile | libconfig, cairo, pango, alsa, libX11, libXrandr | libX11-xcb, xcb-ewmh, gdk-pixbuf2, libxkbcommon |
-| **i3blocks** | Makefile | libconfuse, yajl | - |
+| **Tint2** | CMake | pangocairo, pango, cairo, glib, gobject, imlib2, libX11, libXcomposite, libXdamage, libXinerama, libXrender, libXrandr | librsvg, libstartup-notification, libunwind |
+| **Yambar** | Meson | pixman, yaml, fcft, tllist | XCB libs (X11 backend), wayland-client (Wayland backend) |
+| **Yabar** | Makefile | pango, pangocairo, libconfig, gdk-pixbuf-2.0, alsa, libX11, libXrandr, libxcb, libxcb-randr, libxcb-ewmh, libxcb-icccm, libxkbcommon | playerctl |
+| **i3blocks** | Autotools | None (self-contained) | bash-completion |
 | **Lemonbar** | Makefile | libxcb, libxcb-xinerama, libxcb-randr | - |
 | **Slstatus** | Makefile | libX11, libXext, libXrandr | libXinerama, libpulse, libcap, ALSA, libwireshark |
 | **Dzen2** | Makefile | libX11, libXinerama | libXft |
@@ -159,6 +435,8 @@ A deep-dive analysis of all C-written (pure C) statusbar and taskbar solutions f
 | **Bmpanel2** | Makefile | libX11, libXpm, libXrandr | - |
 | **Fbpanel** | Makefile | gtk, glib, libX11 | - |
 | **Wbar** | Makefile | libX11 | - |
+
+> **Note**: Tint2's `gtk` dependency is only for the optional `tint2conf` GUI configurator, not the tint2 bar itself. i3blocks is fully self-contained with zero library dependencies.
 
 #### Architecture & Design Patterns
 
@@ -192,7 +470,7 @@ A deep-dive analysis of all C-written (pure C) statusbar and taskbar solutions f
 | **CSS/Theming** | ✓ (RC file) | ✓ (YAML) | ✓ (YAML) | ✓ (INI) | ✗ | ✗ | ✗ |
 | **Plugin System** | ✗ | ✓ | ✓ | ✓ (scripts) | ✗ | ✗ | ✗ |
 | **Wayland** | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
-| **Lua Scripting** | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ |
+| **Shell Scripting** | ✗ | ✓ | ✓ | ✓ | ✓ (stdin) | ✗ | ✓ (stdin) |
 | **Battery Monitor** | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ |
 | **CPU Monitor** | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ |
 | **Memory Monitor** | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ |
@@ -203,8 +481,10 @@ A deep-dive analysis of all C-written (pure C) statusbar and taskbar solutions f
 
 #### Performance Characteristics
 
-| Project | Binary Size | Memory (idle) | CPU (idle) | Startup Time | Complexity |
-|---------|-------------|---------------|------------|--------------|------------|
+> **Disclaimer**: Binary sizes and resource usage are approximate estimates based on typical builds. Actual values vary by configuration, plugins loaded, number of blocks/modules, and system state. These figures are for relative comparison only.
+
+| Project | Binary Size (typical) | Memory (idle) | CPU (idle) | Startup Time | Complexity |
+|---------|----------------------|---------------|------------|--------------|------------|
 | **Tint2** | ~200KB | 5-15MB | <1% | ~100ms | High |
 | **Yambar** | ~150KB | 3-8MB | <1% | ~50ms | High |
 | **Yabar** | ~80KB | 5-10MB | <1% | ~80ms | Medium |
@@ -216,27 +496,27 @@ A deep-dive analysis of all C-written (pure C) statusbar and taskbar solutions f
 
 #### Codebase Statistics
 
-| Project | Files | Functions | Structs | Macros | Global Vars | Comments % |
-|---------|-------|-----------|---------|--------|-------------|------------|
-| **Tint2** | ~80 | ~600 | ~50 | ~100 | ~200 | ~25% |
-| **Yambar** | ~60 | ~400 | ~80 | ~60 | ~100 | ~30% |
-| **Yabar** | ~6 | ~40 | ~10 | ~20 | ~15 | ~20% |
-| **i3blocks** | ~10 | ~50 | ~8 | ~15 | ~10 | ~25% |
-| **Lemonbar** | 3 | ~30 | ~5 | ~10 | ~20 | ~15% |
-| **Slstatus** | ~20 | ~40 | ~3 | ~20 | ~10 | ~10% |
-| **Dzen2** | ~5 | ~20 | ~3 | ~10 | ~10 | ~15% |
+> **Note**: Function counts are approximate (function definitions matching `^[a-zA-Z_].*(` pattern). Struct counts include struct definitions in both `.c` and `.h` files.
+
+| Project | C Files | Header Files | Lines of C | Functions | Structs |
+|---------|---------|--------------|------------|-----------|---------|
+| **Tint2** | 54 | 50 | ~37,561 | ~1,032 | ~27 |
+| **Yambar** | 46 | 23 | ~20,720 | ~695 | ~139 |
+| **i3blocks** | 10 | 10 | ~3,581 | ~142 | ~13 |
+| **Yabar** | 5 | 1 | ~3,697 | ~89 | ~10 |
+| **Lemonbar** | 2 | 1 | ~1,619 | ~40 | ~3 |
 
 #### Configuration File Formats
 
-| Project | Format | Example Config Location | Config Lines (typical) |
-|---------|--------|------------------------|------------------------|
+| Project | Format | Default Location | Config Lines (typical) |
+|---------|--------|------------------|------------------------|
 | **Tint2** | Custom text | `~/.config/tint2/tint2rc` | 200-400 |
 | **Yambar** | YAML | `~/.config/yambar/config.yml` | 100-300 |
-| **Yabar** | INI-like | `~/.config/yabar/config.ini` | 50-150 |
-| **i3blocks** | INI | `~/.config/i3blocks/config` | 30-100 |
-| **Lemonbar** | CLI args | `~/.config/lemonbar/lemonbarrc` | 1-30 |
-| **Slstatus** | Config.h | Recompile | 50-100 (in code) |
-| **Dzen2** | CLI args | Script | 1-50 |
+| **Yabar** | libconfig | `~/.config/yabar/config.ini` | 50-150 |
+| **i3blocks** | INI | `~/.config/i3blocks/i3blocks.conf` | 30-100 |
+| **Lemonbar** | CLI args + Xresources | Command-line / `~Xresources` | 1-30 |
+| **Slstatus** | Config.h | Recompile (edit `config.h`) | 50-100 (in code) |
+| **Dzen2** | CLI args | Command-line in script | 1-50 |
 
 #### Platform Support Details
 
@@ -258,107 +538,118 @@ A deep-dive analysis of all C-written (pure C) statusbar and taskbar solutions f
 | **Tint2** | apt, dnf, pacman | tint2 | cmake + make | ✓ |
 | **Yambar** | apt, dnf, pacman | yambar | meson + ninja | ✓ |
 | **Yabar** | apt, dnf | yabar | make | ✓ |
-| **i3blocks** | apt, dnf, pacman | i3blocks | make | ✓ |
+| **i3blocks** | apt, dnf, pacman | i3blocks | autotools (configure + make) | ✓ |
 | **Lemonbar** | apt, dnf, pacman | lemonbar | make | ✓ |
 | **Slstatus** | pacman | slstatus | make | ✓ |
 | **Dzen2** | apt, dnf | dzen2 | make | ✓ |
 
 #### Community & Ecosystem
 
-| Project | GitHub Stars | Forks | Open Issues | Contributors | Last Commit |
-|---------|-------------|-------|-------------|--------------|-------------|
-| **Tint2** | ~400 | ~100 | ~50 | ~20 | 2024 |
-| **Yambar** | ~300 | ~30 | ~10 | ~10 | 2024 |
-| **Yabar** | ~680 | ~140 | ~30 | ~15 | 2024 |
-| **i3blocks** | ~1,400 | ~150 | ~20 | ~40 | 2023 |
-| **Lemonbar** | ~1,700 | ~190 | ~10 | ~20 | 2024 |
-| **Slstatus** | ~400 | ~80 | ~5 | ~10 | 2023 |
-| **Dzen2** | ~500 | ~45 | ~2 | ~5 | 2019 |
+> **Note**: Star/fork counts are approximate and change over time. Tint2 and Yambar are hosted on GitLab, so GitHub stats are unavailable.
+
+| Project | Stars | Forks | Open Issues | Last Commit |
+|---------|-------|-------|-------------|-------------|
+| **Tint2** | ~400 (GitLab) | ~100 | ~50 | 2024 |
+| **Yambar** | ~300 (GitLab) | ~30 | ~10 | 2024 |
+| **Yabar** | ~680 (GitHub) | ~140 | ~30 | 2024 |
+| **i3blocks** | ~2,457 (GitHub) | ~184 | ~62 | 2023 |
+| **Lemonbar** | ~1,685 (GitHub) | ~188 | ~21 | 2024 |
+| **Slstatus** | ~400 (GitHub) | ~80 | ~5 | 2023 |
+| **Dzen2** | ~500 (GitHub) | ~45 | ~2 | 2019 |
 
 ### Architecture Deep Dive
 
 #### Lemonbar - Ultra-Minimalist Design
 ```
-lemonbar.c (1,619 lines)
-├── Font handling (XCB fonts)
-├── Monitor detection (Xinerama/RandR)
-├── Window management (XCB)
-├── Drawing (XCB rendering)
-├── Event loop (XCB poll)
-└── Input handling (mouse clicks)
+lemonbar/
+├── lemonbar.c (1,554 lines) - Main bar logic, drawing, events
+├── utils.c (55 lines) - Utility functions
+└── utils.h (10 lines) - Type definitions
 ```
+**Total**: 1,619 lines across 3 files.
+
 **Design Philosophy**: Do one thing, do it well. No modules, no plugins, no config file. Everything driven by stdin/CLI args.
 
 #### Tint2 - Feature-Rich Panel
 ```
 tint2/src/
-├── core/
-│   ├── main.c (entry point)
-│   ├── config.c (parser)
-│   └── panel.c (panel management)
-├── util/
-│   ├── server.c (X11 server)
-│   ├── window.c (window management)
-│   └── timer.c (scheduling)
-├── widgets/
-│   ├── clock.c
-│   ├── battery.c
-│   ├── taskbar.c
-│   ├── systray.c
-│   └── tooltip.c
-└── draw/
-    ├── image.c
-    └── area.c
+├── battery/          - Battery status widget
+├── button/           - Button widget
+├── clock/            - Clock widget
+├── execplugin/       - External command execution
+├── freespace/        - Spacer widget
+├── launcher/         - Application launcher
+├── separator/        - Visual separator
+├── systray/          - System tray support
+├── taskbar/          - Window list/taskbar
+├── tint2conf/        - GTK+2 theme configurator
+├── tint2-send/       - IPC sender utility
+├── tooltip/          - Tooltip rendering
+└── util/             - Shared utilities (X11, timer, memory, etc.)
 ```
+**Total**: 54 C files, 50 headers, ~37,561 lines.
+
 **Design Philosophy**: Full-featured desktop panel with all amenities. Complex but complete.
 
 #### Yambar - Plugin-Based Modern Design
 ```
 yambar/
-├── bar.c (bar management)
-├── plugin.c (plugin loader)
-├── particle.c (rendering)
-├── modules/
-│   ├── clock.c
-│   ├── battery.c
-│   ├── cpu.c
-│   └── ... (15+ modules)
-├── particles/
-│   ├── string.c
-│   ├── progress-bar.c
-│   └── ... (8+ particles)
-└── backends/
-    ├── x11.c
-    └── wayland.c
+├── bar/              - Bar container logic
+├── modules/          - Data providers (20 modules)
+│   ├── alsa.c, pulse.c    - Audio
+│   ├── battery.c          - Battery
+│   ├── clock.c            - Time/date
+│   ├── cpu.c, mem.c       - System resources
+│   ├── network.c          - Network
+│   ├── i3.c, river.c      - WM integration
+│   └── script.c           - Custom scripts
+├── particles/        - Renderers (7 particles)
+│   ├── string.c, list.c, ramp.c
+│   ├── progress-bar.c, dynlist.c
+│   └── empty.c
+├── decorations/      - Visual decorations
+└── external/         - External plugins
 ```
-**Design Philosophy**: Separation of concerns. Modules provide data, particles render it. Backend-agnostic.
+**Total**: 46 C files, 23 headers, ~20,720 lines.
+
+**Design Philosophy**: Separation of concerns. Modules provide data, particles render it. Backend-agnostic (X11 + Wayland).
 
 #### i3blocks - Script-Driven Blocks
 ```
 i3blocks/
-├── main.c (entry point)
-├── bar.c (bar management)
-├── block.c (block management)
-├── config.c (INI parser)
-├── json.c (JSON output)
-├── sys.c (system info)
-└── map.c (key-value store)
+├── main.c            - Entry point
+├── bar.c / bar.h     - Bar container
+├── block.c / block.h - Block management
+├── config.c / config.h - INI config parser
+├── i3bar.c           - i3bar protocol output
+├── json.c / json.h   - JSON serialization
+├── ini.c / ini.h     - INI file parser
+├── line.c / line.h   - Line buffer
+├── map.c / map.h     - Key-value store
+├── sys.c / sys.h     - System info helpers
+└── log.h             - Logging macros
 ```
-**Design Philosophy**: Minimal C core, maximum flexibility via external scripts. Each block is a shell script.
+**Total**: 10 C files, 10 headers, ~3,581 lines.
+
+**Design Philosophy**: Minimal C core, maximum flexibility via external scripts. Each block is a shell command.
 
 #### Yabar - Modern Block-Based
 ```
-yabar/src/
-├── ya_main.c (entry point)
-├── ya_parse.c (config parser)
-├── ya_exec.c (block execution)
-├── ya_draw.c (rendering)
-└── intern_blks/
-    ├── ya_cpu.c
-    ├── ya_mem.c
-    └── ... (internal blocks)
+yabar/
+├── include/yabar.h   - All type definitions (1 file)
+└── src/
+    ├── ya_main.c     - Entry point, event loop
+    ├── ya_parse.c    - Config parser
+    ├── ya_exec.c     - Block execution
+    ├── ya_draw.c     - Pango rendering
+    └── intern_blks/
+        └── ya_intern.c - 16 internal blocks
 ```
-**Design Philosophy**: Modern take on block bars. Internal blocks in C, external blocks via scripts.
+**Total**: 5 C files, 1 header, ~3,697 lines.
+
+**Internal blocks**: DATE, UPTIME, MEMORY, THERMAL, BRIGHTNESS, BANDWIDTH, CPU, LOADAVG, DISKIO, NETWORK, BATTERY, VOLUME, WIFI, DISKSPACE, KEYBOARD_LAYOUT, SONG (+ TITLE, WORKSPACE with EWMH).
+
+**Design Philosophy**: Modern take on block bars. Internal blocks in C for performance, external blocks via scripts for flexibility.
 
 ### Use Case Recommendations
 
@@ -440,5 +731,107 @@ Slstatus → Dwmblocks (if using dwm)
 | Conky | | | ✓ |
 | Quickshell | | | ✓ |
 | Fabric | | | ✓ |
+
+## Conclusion: The C-Written Legacy in Linux Status Bar Ecosystem
+
+C-written statusbar and taskbar solutions remain an important part of the Linux ecosystem, offering unique advantages in specific contexts.
+
+### Key Strengths
+
+**Technical Advantages:**
+
+| Strength | Example | Context |
+|----------|---------|---------|
+| **Ultra-low overhead** | lemonbar (~3KB, ~1MB RAM) | Resource-constrained environments |
+| **Predictable performance** | Lemonbar, Dzen2 | Real-time updates without GC pauses |
+| **Cross-platform native support** | X11 tools (Tint2, Yambar) | All major Linux distributions |
+| **Minimal dependencies** | Dzen2, Slstatus | Simple installation and maintenance |
+| **Embedded compatibility** | Dzen2, Lemonbar | IoT and embedded systems |
+
+### Strategic Use Cases
+
+**When C Solutions Excel:**
+
+| Scenario | Best Choice | Reason |
+|----------|-------------|--------|
+| **Performance-critical environments** | lemonbar | Tiny memory footprint, fast updates |
+| **Embedded/IoT systems** | Dzen2, Lemonbar | Minimal dependencies, native compilation |
+| **Highly customized workflows** | i3blocks | Script-based modularity |
+| **Server/headless deployments** | Slstatus | Lightweight monitoring |
+| **Legacy X11 systems** | Tint2 | Full feature set with X11 stability |
+
+### Development Realities
+
+**Current Ecosystem Status:**
+
+| Metric | Reality Check | Implications |
+|--------|---------------|--------------|
+| **Community engagement** | Active but smaller than modern alternatives | Dedicated niche following |
+| **Feature scope** | Varied by project | Different trade-offs per use case |
+| **Modernization pace** | Slower than Rust/Python projects | Conservative, stable codebases |
+| **Documentation quality** | Mixed to good | Some projects have excellent docs |
+| **Cross-platform** | Strong (X11 focus) | Emerging Wayland support growing |
+
+### Migration Considerations
+
+**When Moving From C:**
+
+- **To Rust**: Consider Wayland-native projects (Waybar, Yambar)
+- **To Python**: Choose for scripting flexibility (py3status)
+- **To C++**: Maintain performance while adding features (Polybar)
+
+**C Strengths That Persist:**
+
+1. **Resource efficiency**: Proven track record in embedded systems
+2. **Real-time performance**: No garbage collection for predictable timing
+3. **Cross-distribution support**: Native packages in all major distros
+4. **Backward compatibility**: Existing configurations and workflows
+
+### Practical Guidance
+
+**For Beginners:**
+- Start with **lemonbar** for ultra-lightweight needs
+- Try **i3blocks** for i3wm integration
+- Consider **Slstatus** for minimal system monitoring
+
+**For Advanced Users:**
+- **Tint2** offers comprehensive desktop panel features
+- **Yambar** provides modern plugin architecture
+- **Dzen2** for maximum customization freedom
+
+**For Performance-Critical:**
+- **lemonbar** for absolute minimal overhead
+- Custom C solutions for specialized requirements
+
+### Current State Assessment
+
+**Maintenance Status:**
+- **Actively maintained**: Yambar, i3blocks
+- **Long-term stable**: Lemonbar, Dzen2, Slstatus
+- **Legacy but functional**: Bmpanel2, Wbar
+
+**Modern Relevance:**
+- Remains relevant in embedded and performance-critical scenarios
+- Not ideal for modern GUI-centric workflows
+- Strong foundation for specialized use cases
+
+### Strategic Value
+
+C-written statusbars are most valuable when:
+1. **Resources are constrained** (embedded, mobile, low-end hardware)
+2. **Predictable performance is critical** (real-time updates)
+3. **Long-term stability matters more than feature bloat**
+4. **Minimal dependencies are preferred**
+
+They are less suitable when:
+1. **Modern GUI features are required**
+2. **Web-based workflows dominate**
+3. **Rapid development iteration is prioritized**
+
+### Bottom Line
+
+C-written statusbar solutions continue to serve important, specialized roles in the Linux ecosystem. Their value lies in the specific advantages they offer for particular use cases, rather than as general-purpose solutions. When performance, resource efficiency, and stability are paramount, C-based solutions remain a strong choice.
+
+The legacy persists because it serves real needs that other technologies don't address as effectively. Understanding these specific strengths and limitations helps determine when C-based statusbars are the right tool for the job.
 
 
