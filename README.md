@@ -72,7 +72,7 @@ Whether you are selecting a bar for a new rice setup, evaluating alternatives fo
 | **Budgie Panel** | https://github.com/BuddiesOfBudgie/budgie-desktop | C/Vala | Modern panel from Budgie desktop |
 | **Cinnamon Panel** | https://github.com/linuxmint/cinnamon | JavaScript/C | Panel from Cinnamon desktop with applets |
 | **MATE Panel** | https://github.com/mate-desktop/mate-panel | C | Traditional panel from MATE desktop |
-| **LXDE Panel** | https://github.com/lxqt/lxpanel | C | Lightweight panel from LXDE/LXQt |
+| **LXDE Panel** | https://github.com/lxqt/lxqt-panel | C | Lightweight panel from LXDE/LXQt |
 | **GNOME Topbar** | https://gitlab.gnome.org/GNOME/gnome-shell (built-in) | JavaScript | Minimal top bar from GNOME |
 | **Pantheon Panel** | https://github.com/elementary/pantheon-shell | Vala | Panel from elementary OS Pantheon |
 | **Enlightenment Shelf** | https://github.com/nicm/enlightenment | C | Panel/shelf from Enlightenment |
@@ -103,25 +103,28 @@ A comprehensive analysis of widget systems that can be used to build status bars
 | **Ags** | https://github.com/Aylur/ags | TypeScript/GJS | Wayland | ~3,100 | GPL-3.0 | v3.1.2 (2026) |
 | **Quickshell** | https://github.com/quickshell-mirror/quickshell | C++ | X11 + Wayland | ~2,600 | LGPL-3.0 | v0.3.0 (2026) |
 | **Fabric** | https://github.com/Fabric-Development/fabric | Python | X11 + Wayland | ~1,300 | AGPL-3.0 | v0.0.1 (2024) |
+| **sfwbar** | https://github.com/LBCrion/sfwbar | C | Wayland | ~405 | GPL-3.0 | v1.0_beta17 (2026) |
+| **ashell** | https://github.com/MalpenZibo/ashell | Rust | Wayland | ~1,000 | GPL-3.0 | v0.9.0 (2026) |
 
 ### Comparative Analysis
 
-#### GTK-Based Solutions (Eww, Ags, Fabric)
+#### GTK-Based Solutions (Eww, Ags, Fabric, sfwbar)
 
-| Aspect | Eww | Ags | Fabric |
-|--------|-----|-----|--------|
-| **Language** | Rust | TypeScript/GJS | Python |
-| **GTK Version** | GTK3 | GTK3/4 | GTK3 |
-| **Config Format** | Yuck + SCSS | TypeScript/JSX | Python |
-| **X11** | ✓ | ✗ | ✓ |
-| **Wayland** | ✓ | ✓ | ✓ |
-| **Learning Curve** | Medium | Medium-High | Low |
-| **Maturity** | High | Medium | Low |
+| Aspect | Eww | Ags | Fabric | sfwbar |
+|--------|-----|-----|--------|--------|
+| **Language** | Rust | TypeScript/GJS | Python | C |
+| **GTK Version** | GTK3 | GTK3/4 | GTK3 | GTK3 |
+| **Config Format** | Yuck + SCSS | TypeScript/JSX | Python | Custom config |
+| **X11** | ✓ | ✗ | ✓ | ✗ |
+| **Wayland** | ✓ | ✓ | ✓ | ✓ |
+| **Learning Curve** | Medium | Medium-High | Low | Low-Medium |
+| **Maturity** | High | Medium | Low | Medium |
 
-**Eww vs Ags vs Fabric**:
+**Eww vs Ags vs Fabric vs sfwbar**:
 - **Eww**: Best for X11+Wayland, Yuck markup is unique but has learning curve
 - **Ags**: Best for Wayland-only, TypeScript familiar to web devs, full GTK widget set
 - **Fabric**: Easiest to learn (pure Python), but early stage and less features
+- **sfwbar**: C-written Wayland-native, taskbar-focused, tint2-style grouping support
 
 #### Qt-Based Solution (Quickshell)
 
@@ -158,16 +161,18 @@ A comprehensive analysis of widget systems that can be used to build status bars
 
 | Decision Factor | Best Choice | Runner-up |
 |-----------------|-------------|-----------|
-| **Easiest to start** | Fabric (Python) | Eww (Yuck) |
-| **Most features** | Ags (full GTK) | Quickshell (full Qt) |
+| **Easiest to start** | ashell (ready-to-go) | Fabric (Python) |
+| **Most features** | ashell (built-in modules) | Ags (full GTK) |
 | **Best X11+Wayland** | Eww | Fabric |
-| **Best Wayland-only** | Ags | Quickshell |
-| **Lowest resource usage** | Conky (~2MB) | Fabric (~3MB) |
+| **Best Wayland-only** | ashell | Ags |
+| **Lowest resource usage** | Conky (~2MB) | ashell (~5MB) |
 | **Largest community** | Eww (~12.5k stars) | Conky (~8.4k stars) |
 | **Most mature** | Conky (20+ years) | Eww (5+ years) |
-| **Best for system monitor** | Conky | Ags (via services) |
+| **Best for system monitor** | Conky | ashell (built-in) |
 | **Best for desktop shell** | Ags | Quickshell |
 | **Best for custom widgets** | Eww | Fabric |
+| **Best C-written Wayland** | sfwbar | yambar |
+| **Best Rust Wayland** | ashell | Eww |
 
 #### Strengths & Weaknesses Summary
 
@@ -178,25 +183,28 @@ A comprehensive analysis of widget systems that can be used to build status bars
 | **Ags** | Full GTK widget set, TypeScript | Wayland-only, GNOME tied |
 | **Quickshell** | Qt6 performance, professional UI | Heavy dependency, C++ complexity |
 | **Fabric** | Pure Python, easy to learn | Early stage, small community |
+| **sfwbar** | C-written, Wayland-native, taskbar-focused | Wayland-only, smaller community |
+| **ashell** | Ready-to-go, built-in modules, Rust performance | Wayland-only, iced-rs dependency |
 
 ### Feature Comparison Matrix
 
-| Feature | Eww | Conky | Ags | Quickshell | Fabric |
-|---------|-----|-------|-----|------------|--------|
-| **X11 Support** | ✓ | ✓ | ✗ | ✓ | ✓ |
-| **Wayland Support** | ✓ | Experimental | ✓ | ✓ | ✓ |
-| **GTK Integration** | ✓ (GTK3) | ✗ | ✓ (GTK3/4) | ✗ | ✓ (GTK3) |
-| **Qt Integration** | ✗ | ✗ | ✗ | ✓ (Qt6) | ✗ |
-| **Custom Markup** | ✓ (Yuck) | ✓ (Lua-like) | ✓ (TypeScript) | ✓ (QML) | ✓ (Python) |
-| **Scripting** | Bash | Lua | TypeScript/JS | QML/C++ | Python |
-| **System Monitoring** | Via scripts | ✓ (300+ objects) | Via services | Via plugins | Via Python |
-| **Bar/Panel Mode** | ✓ | ✗ | ✓ | ✓ | ✓ |
-| **Desktop Widgets** | ✓ | ✓ | ✓ | ✓ | ✓ |
-| **Interactive Widgets** | ✓ | Limited | ✓ | ✓ | ✓ |
-| **System Tray** | ✗ | ✗ | ✓ | ✓ | ✗ |
-| **Notifications** | ✗ | ✗ | ✓ | ✓ | ✗ |
-| **Build Complexity** | Low | Medium | Medium | High | Low |
-| **Runtime Size** | ~5MB | ~2MB | ~10MB | ~15MB | ~3MB |
+| Feature | Eww | Conky | Ags | Quickshell | Fabric | sfwbar | ashell |
+|---------|-----|-------|-----|------------|--------|--------|--------|
+| **X11 Support** | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✗ |
+| **Wayland Support** | ✓ | Experimental | ✓ | ✓ | ✓ | ✓ | ✓ |
+| **GTK Integration** | ✓ (GTK3) | ✗ | ✓ (GTK3/4) | ✗ | ✓ (GTK3) | ✓ (GTK3) | ✗ (iced-rs) |
+| **Qt Integration** | ✗ | ✗ | ✗ | ✓ (Qt6) | ✗ | ✗ | ✗ |
+| **Custom Markup** | ✓ (Yuck) | ✓ (Lua-like) | ✓ (TypeScript) | ✓ (QML) | ✓ (Python) | ✓ (Custom) | ✓ (TOML) |
+| **Scripting** | Bash | Lua | TypeScript/JS | QML/C++ | Python | Shell | Rust/Shell |
+| **System Monitoring** | Via scripts | ✓ (300+ objects) | Via services | Via plugins | Via Python | Via scripts | ✓ (Built-in) |
+| **Bar/Panel Mode** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| **Desktop Widgets** | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| **Interactive Widgets** | ✓ | Limited | ✓ | ✓ | ✓ | ✓ | ✓ |
+| **System Tray** | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ |
+| **Notifications** | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ |
+| **Taskbar** | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ |
+| **Build Complexity** | Low | Medium | Medium | High | Low | Low | Low |
+| **Runtime Size** | ~5MB | ~2MB | ~10MB | ~15MB | ~3MB | ~5MB | ~5MB |
 
 ### Architecture Patterns
 
@@ -256,12 +264,15 @@ A comprehensive analysis of widget systems that can be used to build status bars
 
 | Use Case | Recommended | Why |
 |----------|-------------|-----|
-| **Status Bar** | Eww, Ags | Bar-specific features |
+| **Status Bar** | ashell, Eww | Ready-to-go or highly customizable |
 | **System Monitor** | Conky | 300+ built-in objects |
 | **Desktop Shell** | Ags, Quickshell | Full desktop integration |
 | **Custom Widgets** | Eww, Fabric | Flexible widget creation |
 | **Cross-platform** | Conky, Quickshell | Multi-platform support |
-| **Wayland-native** | Ags | Native Wayland support |
+| **Wayland-native** | ashell, Ags | Native Wayland support |
+| **Taskbar (Wayland)** | sfwbar | C-written, taskbar-focused |
+| **Taskbar (X11)** | tint2 | Full panel features |
+| **Ready-to-go (Wayland)** | ashell | Built-in modules, minimal config |
 
 #### By Resource Constraints
 
@@ -324,6 +335,18 @@ Ags → Quickshell (Qt performance)
 | **Qtile** | https://github.com/qtile/qtile | Bar widget | Python-based widget bar |
 | **LeftWM** | https://github.com/leftwm/leftwm | External | Uses polybar/lemonbar |
 
+### C-Written Bars with Git Repositories
+
+| Project | Git Repository | Language | Platform | Stars | License | Key Feature |
+|---------|---------------|----------|----------|-------|---------|-------------|
+| **lemonbar** | https://github.com/LemonBoy/bar | C | X11 | ~1,700 | MIT | Ultra-minimalist, ~3KB binary |
+| **sfwbar** | https://github.com/LBCrion/sfwbar | C | Wayland | ~405 | GPL-3.0 | Taskbar, tray, widgets, GTK3 layer-shell |
+| **dwmblocks** | https://github.com/torrinfail/dwmblocks | C | X11 | ~611 | ISC | Block-based, dwm-native |
+| **i3blocks** | https://github.com/vivien/i3blocks | C | X11 | ~2,457 | GPL-3.0 | Block-based, i3wm-native |
+| **yabar** | https://github.com/geommer/yabar | C | X11 | ~680 | MIT | Modern block-based, Pango rendering |
+| **tint2** | https://gitlab.com/o9000/tint2 | C | X11 | ~400 | GPL-2.0 | Full panel (systray, taskbar) |
+| **yambar** | https://gitlab.com/dnkl/yambar | C | X11 + Wayland | ~300 | MIT | Plugin-based, modular |
+
 ### Legacy/Abandoned Projects
 
 | Project | Git Repository | Language | Description |
@@ -376,8 +399,21 @@ A practical comparison of pure C statusbar and taskbar solutions, focusing on re
 |---------|--------------|----------|------------|
 | **tint2** | Widget-based | Full panel (systray, taskbar) | High |
 | **yambar** | Plugin-based | Modular Wayland support | High |
+| **sfwbar** | Layer-shell | Taskbar, tray, widgets, Wayland-native | High |
 
 **Trade-off**: Comprehensive feature set at cost of resource usage
+
+#### Wayland-Native Solutions
+
+**Goal**: Modern Wayland support with native performance
+
+| Project | Language | Stars | Platform | Key Feature |
+|---------|----------|-------|----------|-------------|
+| **ashell** | Rust | ~1,000 | Wayland only | Ready-to-go, built-in modules, iced-rs UI |
+| **sfwbar** | C | ~405 | Wayland only | Taskbar, tray, widgets, GTK3 layer-shell |
+| **yambar** | C | ~300 | X11 + Wayland | Plugin-based modular design |
+
+**Trade-off**: Wayland-native but limited to wlroots compositors
 
 ### Strategic Decision Guide
 
@@ -412,6 +448,7 @@ A practical comparison of pure C statusbar and taskbar solutions, focusing on re
 | **i3blocks** | Strong, large | Actively developed | Excellent |
 | **yambar** | Strong, modern | Actively developed | Good |
 | **tint2** | Growing | Actively developed | Good |
+| **sfwbar** | Growing, active | Actively developed | Good (Fedora, Arch) |
 
 #### Distribution Package Reality
 
@@ -423,6 +460,7 @@ A practical comparison of pure C statusbar and taskbar solutions, focusing on re
 | **slstatus** | Limited | Arch only | ✗ |
 | **i3blocks** | ✓ | ✓ | ✓ |
 | **tint2** | ✓ | ✓ | ✓ |
+| **sfwbar** | ✓ | Fedora, Arch | ✗ |
 
 **What this means**: Minimalist projects (lemonbar) have strongest cross-distribution support
 
@@ -434,8 +472,10 @@ A practical comparison of pure C statusbar and taskbar solutions, focusing on re
 |---------|--------|---------|-----------|------------|
 | **lemonbar** | 1-3MB | <10ms | ~20KB | Resource-constrained |
 | **slstatus** | 1-2MB | <10ms | ~30KB | Simple monitoring |
+| **dwmblocks** | 1-2MB | <10ms | ~15KB | dwm users |
 | **i3blocks** | 2-5MB | ~30ms | ~50KB | i3wm users |
 | **yabar** | 3-8MB | ~50ms | ~80KB | Modern features |
+| **sfwbar** | 5-10MB | ~50ms | ~100KB | Wayland taskbar |
 | **tint2** | 5-15MB | ~100ms | ~200KB | Desktop needs |
 
 **Key Pattern**: Minimalist projects use 2-5x less memory than feature-rich ones
@@ -505,6 +545,7 @@ Ultra-minimalist → Feature-rich (Wayland migration)
 |---------|----------------------|---------------|------------|--------------|------------|
 | **Tint2** | ~200KB | 5-15MB | <1% | ~100ms | High |
 | **Yambar** | ~150KB | 3-8MB | <1% | ~50ms | High |
+| **sfwbar** | ~100KB | 5-10MB | <1% | ~50ms | High |
 | **Yabar** | ~80KB | 5-10MB | <1% | ~80ms | Medium |
 | **i3blocks** | ~50KB | 2-5MB | <1% | ~30ms | Low |
 | **Lemonbar** | ~20KB | 1-3MB | <1% | ~10ms | Very Low |
@@ -668,6 +709,46 @@ yabar/
 **Internal blocks**: DATE, UPTIME, MEMORY, THERMAL, BRIGHTNESS, BANDWIDTH, CPU, LOADAVG, DISKIO, NETWORK, BATTERY, VOLUME, WIFI, DISKSPACE, KEYBOARD_LAYOUT, SONG (+ TITLE, WORKSPACE with EWMH).
 
 **Design Philosophy**: Modern take on block bars. Internal blocks in C for performance, external blocks via scripts for flexibility.
+
+#### sfwbar - Wayland-Native Taskbar
+```
+sfwbar/
+├── src/
+│   ├── main.c           - Entry point
+│   ├── bar.c            - Bar container
+│   ├── taskbar.c        - Window list/taskbar
+│   ├── tray.c           - System tray
+│   ├── widget.c         - Widget rendering
+│   ├── config.c         - Config parser
+│   └── ...
+├── modules/             - Optional modules
+└── config/              - Example configs
+```
+**Total**: C (98.3%), ~2,323 commits.
+
+**Design Philosophy**: Wayland-native taskbar with tint2-style grouping, system tray, and widget support. GTK3 layer-shell integration.
+
+#### ashell - Rust Wayland Status Bar
+```
+ashell/
+├── src/
+│   ├── main.rs          - Entry point
+│   ├── bar.rs           - Bar container
+│   ├── modules/         - Built-in modules
+│   │   ├── cpu.rs, memory.rs, disk.rs
+│   │   ├── network.rs, temperature.rs
+│   │   ├── battery.rs, audio.rs, bluetooth.rs
+│   │   ├── workspaces.rs, clock.rs
+│   │   ├── notifications.rs, media_player.rs
+│   │   └── ...
+│   ├── widgets/         - UI components (iced-rs)
+│   └── config/          - Configuration handling
+├── i18n/                - Internationalization
+└── assets/              - Icons, themes
+```
+**Total**: Rust (96.3%), ~1,972 commits.
+
+**Design Philosophy**: Ready-to-go status bar with built-in modules for all common use cases. Uses iced-rs for GPU-accelerated UI. Minimal configuration needed.
 
 ### Use Case Recommendations
 
